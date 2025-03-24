@@ -1,0 +1,31 @@
+One main issue at loading files into a sql database are that sometimes the files that we want to add to our db are multiple tables,
+it could be exhausting and time-consuming at creating an schema for every table that we want to add to our db and then loading the information into each table
+one at the time, sometimes it's better to automate this process using programming, specifically there are python's librarirs that can help us at 
+manipualting SQL objects.
+
+The following it's the code used to loading all the csv files files within a folder and importing their data into new tables, all in the same code:
+
+import os
+import pandas as pd
+from sqlalchemy import create_engine
+
+# Database connection details
+engine = create_engine('postgresql+psycopg2://postgres:postcoco:V1398@localhost/Olympics')
+
+# Path to your folder containing CSV files
+folder_path = r'C:\\Users\\ricar\\OneDrive\\Escritorio\\PROJECTS\\SQL_Olympics\\DATASET\\CSVs'
+
+# Loop through all CSV files in the folder
+for file in os.listdir(folder_path):
+    if file.endswith('.csv'):  # Ensures only CSV files are processed
+        file_path = os.path.join(folder_path, file)
+
+        # Load the CSV into a pandas DataFrame
+        df = pd.read_csv(file_path)
+
+        # Use the filename (or a custom name) as the table name
+        table_name = file.split('.')[0]
+
+        # Write data to PostgreSQL
+        df.to_sql(table_name, engine, if_exists='replace', index=False)
+        print(f"Imported {file} into {table_name}")
