@@ -10,10 +10,10 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 # Database connection details
-engine = create_engine('postgresql+psycopg2://postgres:postcoco:V1398@localhost/Olympics')
+engine = create_engine('postgresql+psycopg2://<user>:<password>/<db>')
 
 # Path to your folder containing CSV files
-folder_path = r'C:\\Users\\ricar\\OneDrive\\Escritorio\\PROJECTS\\SQL_Olympics\\DATASET\\CSVs'
+folder_path = r'<folders_path>'
 
 # Loop through all CSV files in the folder
 for file in os.listdir(folder_path):
@@ -29,3 +29,5 @@ for file in os.listdir(folder_path):
         # Write data to PostgreSQL
         df.to_sql(table_name, engine, if_exists='replace', index=False)
         print(f"Imported {file} into {table_name}")
+
+This approach may produce good results, but there lets something very important on the air, and it is creating/specifyng a primary key for each table, this task could be done manually or programmatically.
